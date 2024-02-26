@@ -2,6 +2,7 @@ import * as React from "react";
 import { MatchPersonItemProps } from "./match-person-item.types";
 import { Edit, Trash2 } from "lucide-react";
 import MatchNewParticipantItem from "../match-new-participant-item";
+import Button from "@/components/core/button";
 
 const MatchPersonItem: React.FC<MatchPersonItemProps> = ({
 	participant,
@@ -40,20 +41,22 @@ const MatchPersonItem: React.FC<MatchPersonItemProps> = ({
 				</p>
 			</div>
 			<div className="flex items-center gap-3">
-				<button
+				<Button
 					onClick={toggleIsEdit}
 					title="Confirm Changes"
 					className="cursor-pointer"
-				>
-					<Edit className="w-4 h-4 text-primary" />
-				</button>
-				<button
+					variant="base"
+					size="base"
+					icon={<Edit className="w-4 h-4 text-primary" />}
+				/>
+				<Button
 					title="Remove participant"
 					className="cursor-pointer"
+					variant="base"
+					size="base"
 					onClick={() => onRemove(participant.uid)}
-				>
-					<Trash2 className="w-4 h-4 text-gray-400" />
-				</button>
+					icon={<Trash2 className="w-4 h-4 text-gray-400" />}
+				/>
 			</div>
 		</li>
 	);

@@ -1,4 +1,5 @@
 "use client";
+import Button from "@/components/core/button";
 import MatchNewParticipantItem from "@/components/match/match-new-participant-item";
 import MatchPersonItem from "@/components/match/match-person-item";
 import { MatchPerson } from "@/types/core";
@@ -64,16 +65,16 @@ const NewMatchPage = () => {
 				</ul>
 
 				<div className="p-4 pt-8">
-					<button
+					<Button
 						className="bg-primary text-white py-3 px-8 rounded-md w-full"
 						onClick={onAdd}
 					>
 						Add participant
-					</button>
+					</Button>
 					{participants.length > 1 && (
-						<button className="bg-green-600 py-3 px-8 rounded-md w-full mt-4 text-white font-bold">
+						<Button variant="success" className="mt-4">
 							Match!
-						</button>
+						</Button>
 					)}
 				</div>
 			</section>
