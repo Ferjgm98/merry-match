@@ -1,4 +1,5 @@
 "use client";
+import { sendMatchEmail } from "@/actions";
 import Button from "@/components/core/button";
 import MatchNewParticipantItem from "@/components/match/match-new-participant-item";
 import MatchPersonItem from "@/components/match/match-person-item";
@@ -25,6 +26,8 @@ const NewMatchPage = () => {
 				item.email = values.email;
 			}
 
+			onAdd();
+
 			return clone;
 		});
 	};
@@ -33,6 +36,14 @@ const NewMatchPage = () => {
 		setParticipants((prev) => {
 			return prev.filter((participant) => participant.uid !== uuid);
 		});
+	};
+
+	const onMatch = async () => {
+		const validMathPeople = participants?.filter(
+			(value) => value?.name && value?.email
+		) as unknown as MatchPerson[];
+
+		await sendMatchEmail(validMathPeople);
 	};
 
 	return (
@@ -72,7 +83,7 @@ const NewMatchPage = () => {
 						Add participant
 					</Button>
 					{participants.length > 1 && (
-						<Button variant="success" className="mt-4">
+						<Button variant="success" className="mt-4" onClick={onMatch}>
 							Match!
 						</Button>
 					)}
