@@ -1,7 +1,11 @@
 'use server';
 
+import { Resend } from 'resend';
 import { MatchPerson } from '@/types/core';
 import { randomNumberFromRange } from '@/utils';
+import { SendEmailTemplate } from '@/email/templates';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const getRandomNumberDifferentThanCurrent = (
   min: number,
@@ -29,9 +33,24 @@ export async function sendMatchEmail(
       i,
     );
 
-    console.log({ randomSecretIdx });
-
     const deleted = avSecret.splice(randomSecretIdx, 1);
     matchMap.set(participants[i], deleted[0]);
+  }
+
+  console.log('Sending email');
+  for (const [giver, receiver] of matchMap) {
+    console.log('Sending email to', { giver });
+    const data = await resend.emails.send({
+      from: `Merry Match <onboarding@resend.dev>`,
+      to: [giver.email],
+      text: '',
+      subject: 'Open to see your Secret Santa!',
+      react: SendEmailTemplate({
+        name: giver.name,
+        secretSanta: receiver.name,
+      }),
+    });
+
+    console.log({ data });
   }
 }
