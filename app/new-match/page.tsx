@@ -1,17 +1,17 @@
-"use client";
-import { sendMatchEmail } from "@/actions";
-import Button from "@/components/core/button";
-import MatchNewParticipantItem from "@/components/match/match-new-participant-item";
-import MatchPersonItem from "@/components/match/match-person-item";
-import { MatchPerson } from "@/types/core";
-import { generateUid } from "@/utils";
-import { useState } from "react";
+'use client';
+import { sendMatchEmail } from '@/actions';
+import Button from '@/components/core/button';
+import MatchNewParticipantItem from '@/components/match/match-new-participant-item';
+import MatchPersonItem from '@/components/match/match-person-item';
+import { MatchPerson } from '@/types/core';
+import { generateUid } from '@/utils';
+import { useState } from 'react';
 
 const NewMatchPage = () => {
   const [participants, setParticipants] = useState<
     (MatchPerson | Partial<MatchPerson>)[]
   >([]);
-
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
   const onAdd = (): void => {
     setParticipants((prev) => [...prev, { uid: generateUid() }]);
   };
@@ -39,11 +39,19 @@ const NewMatchPage = () => {
   };
 
   const onMatch = async () => {
-    const validMathPeople = participants?.filter(
-      (value) => value?.name && value?.email,
-    ) as unknown as MatchPerson[];
+    try {
+      setIsSendingEmail(true);
+      const validMathPeople = participants?.filter(
+        (value) => value?.name && value?.email,
+      ) as unknown as MatchPerson[];
 
-    await sendMatchEmail(validMathPeople);
+      await sendMatchEmail(validMathPeople);
+    } catch (e: unknown) {
+      setIsSendingEmail(false);
+      console.log(e);
+    } finally {
+      setIsSendingEmail(false);
+    }
   };
 
   return (
@@ -66,7 +74,7 @@ const NewMatchPage = () => {
               />
             ) : (
               <MatchNewParticipantItem
-                uuid={participant.uid || ""}
+                uuid={participant.uid || ''}
                 onSave={onSave}
                 onRemove={onRemove}
                 key={participant.uid}
