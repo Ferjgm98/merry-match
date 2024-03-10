@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   Body,
+  CodeInline,
   Container,
   Head,
   Html,
@@ -29,10 +30,18 @@ export const MatchResultEmail: React.FC<Readonly<MatchResultEmailProps>> = ({
               <Text className="text-black">Dear {name}</Text>
               <Text className="text-black">
                 The anticipation is over! You're officially the Secret Santa for
-                <strong className="text-gray-600 px-2">{receiverName}</strong>in
-                our holiday gift exchange. It's time to infuse the season with
-                joy and warmth.
+                a very special person in our holiday gift exchange. It's time to
+                infuse the season with joy and warmth.
               </Text>
+              <Text>
+                Wishing you both a magical exchange filled with laughter and
+                joy. May your gift make this season even more special for
+              </Text>
+
+              <CodeInline className="font-bold text-xl py-2">
+                {receiverName}
+              </CodeInline>
+              <Text>Happy gifting and happy holidays!</Text>
             </Container>
           </Body>
         </React.Fragment>

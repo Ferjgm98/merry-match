@@ -5,16 +5,30 @@ import MatchNewParticipantItem from '@/components/match/match-new-participant-it
 import MatchPersonItem from '@/components/match/match-person-item';
 import { MatchPerson } from '@/types/core';
 import { generateUid } from '@/utils';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 const NewMatchPage = () => {
   const [participants, setParticipants] = useState<
     (MatchPerson | Partial<MatchPerson>)[]
-  >([]);
+  >([{ uid: generateUid() }]);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const onAdd = (): void => {
     setParticipants((prev) => [...prev, { uid: generateUid() }]);
   };
+
+  const readyToMatchParticipants = useMemo(() => {
+    return participants?.filter(
+      (value) => value?.name && value?.email,
+    ) as unknown as MatchPerson[];
+  }, [participants]);
+
+  const participantsMissingToPopulate = useMemo(
+    () =>
+      participants?.filter(
+        (value) => !value?.name || !value?.email,
+      ) as unknown as MatchPerson[],
+    [participants],
+  );
 
   const onSave = (uuid: string, values: Partial<MatchPerson>): void => {
     setParticipants((prev) => {
@@ -26,7 +40,9 @@ const NewMatchPage = () => {
         item.email = values.email;
       }
 
-      onAdd();
+      if (participantsMissingToPopulate?.length < 2) {
+        onAdd();
+      }
 
       return clone;
     });
@@ -41,11 +57,7 @@ const NewMatchPage = () => {
   const onMatch = async () => {
     try {
       setIsSendingEmail(true);
-      const validMathPeople = participants?.filter(
-        (value) => value?.name && value?.email,
-      ) as unknown as MatchPerson[];
-
-      await sendMatchEmail(validMathPeople);
+      await sendMatchEmail(readyToMatchParticipants);
     } catch (e: unknown) {
       setIsSendingEmail(false);
       console.log(e);
@@ -56,7 +68,7 @@ const NewMatchPage = () => {
 
   return (
     <main className="py-4">
-      <h1 className="text-center text-3xl font-semibold py-8">New Match</h1>
+      <h1 className="text-center text-5xl font-bold py-8">New Match</h1>
       <section className="w-full md:max-w-md lg:max-w-xl border mx-auto">
         {!participants.length && (
           <p className="text-center my-2 mt-4 font-semibold">
@@ -85,13 +97,19 @@ const NewMatchPage = () => {
 
         <div className="p-4 pt-8">
           <Button
-            className="bg-primary text-white py-3 px-8 rounded-md w-full"
+            variant="secondary"
             onClick={onAdd}
+            isLoading={isSendingEmail}
           >
             Add participant
           </Button>
-          {participants.length > 1 && (
-            <Button variant="success" className="mt-4" onClick={onMatch}>
+          {readyToMatchParticipants?.length > 2 && (
+            <Button
+              isLoading={isSendingEmail}
+              variant="primary"
+              className="mt-4"
+              onClick={onMatch}
+            >
               Match!
             </Button>
           )}
