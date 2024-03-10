@@ -75,7 +75,7 @@ const NewMatchPage = () => {
             Add new participants to your secret santa list!
           </p>
         )}
-        <ul className="px-2">
+        <ul className="sm:px-2">
           {participants?.map((participant) =>
             participant.name && participant.email ? (
               <MatchPersonItem

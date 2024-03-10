@@ -29,7 +29,7 @@ const MatchPersonItem: React.FC<MatchPersonItemProps> = ({
     />
   ) : (
     <li
-      className="px-4 py-4 border-b flex justify-between items-center gap-4"
+      className="px-2 sm:px-4 py-4 border-b flex justify-between items-center gap-4"
       key={participant.uid}
     >
       <div className="flex justify-between flex-1">
