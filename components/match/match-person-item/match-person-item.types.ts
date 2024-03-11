@@ -1,7 +1,11 @@
-import { MatchPerson } from "@/types/core";
+import { MatchPerson } from '@/types/core';
 
 export interface MatchPersonItemProps {
-	participant: MatchPerson;
-	onRemove: (uid: string) => void;
-	onSave: (uuid: string, values: Partial<MatchPerson>) => void;
+  participant: MatchPerson;
+  onRemove: (uid: string) => void;
+  onSave: (
+    uuid: string,
+    values: Partial<MatchPerson>,
+    isEdit?: boolean,
+  ) => void;
 }

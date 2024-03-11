@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { matchPersonSchema } from './match-new-participant-item.schema';
 import Input from '@/components/core/input';
 import Button from '@/components/core/button';
+import { motion } from 'framer-motion';
 
 const MatchNewParticipantItem: React.FC<MatchNewParticipantItemProps> = ({
   uuid,
@@ -17,7 +18,7 @@ const MatchNewParticipantItem: React.FC<MatchNewParticipantItemProps> = ({
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<MatchPerson>({
     resolver: zodResolver(matchPersonSchema),
     values: {
@@ -32,7 +33,12 @@ const MatchNewParticipantItem: React.FC<MatchNewParticipantItemProps> = ({
   };
 
   return (
-    <li>
+    <motion.li
+      initial={{ opacity: 0 }}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <form
         className="py-2 px-2 sm:px-4 border-b flex justify-between items-center gap-4"
         onSubmit={handleSubmit(onSubmit)}
@@ -79,7 +85,7 @@ const MatchNewParticipantItem: React.FC<MatchNewParticipantItemProps> = ({
           />
         </div>
       </form>
-    </li>
+    </motion.li>
   );
 };
 

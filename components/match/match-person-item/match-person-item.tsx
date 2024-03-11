@@ -3,6 +3,7 @@ import { MatchPersonItemProps } from './match-person-item.types';
 import { Edit, Trash2 } from 'lucide-react';
 import MatchNewParticipantItem from '../match-new-participant-item';
 import Button from '@/components/core/button';
+import { motion } from 'framer-motion';
 
 const MatchPersonItem: React.FC<MatchPersonItemProps> = ({
   participant,
@@ -16,7 +17,7 @@ const MatchPersonItem: React.FC<MatchPersonItemProps> = ({
   };
 
   const onUpdate: MatchPersonItemProps['onSave'] = (uid, values): void => {
-    onSave(uid, values);
+    onSave(uid, values, true);
     toggleIsEdit();
   };
 
@@ -28,9 +29,13 @@ const MatchPersonItem: React.FC<MatchPersonItemProps> = ({
       onSave={onUpdate}
     />
   ) : (
-    <li
+    <motion.li
       className="px-2 sm:px-4 py-4 border-b flex justify-between items-center gap-4"
       key={participant.uid}
+      initial={{ opacity: 0 }}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
     >
       <div className="flex justify-between flex-1">
         <p>{participant.name}</p>
@@ -58,7 +63,7 @@ const MatchPersonItem: React.FC<MatchPersonItemProps> = ({
           icon={<Trash2 className="w-4 h-4 text-gray-400" />}
         />
       </div>
-    </li>
+    </motion.li>
   );
 };
 

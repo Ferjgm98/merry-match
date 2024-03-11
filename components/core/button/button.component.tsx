@@ -7,6 +7,7 @@ import {
   ButtonVariants,
   ButtonSizes,
 } from './button.types';
+import { motion } from 'framer-motion';
 
 const Button: React.FC<React.PropsWithChildren<ButtonComponentProps>> = ({
   children,
@@ -22,7 +23,7 @@ const Button: React.FC<React.PropsWithChildren<ButtonComponentProps>> = ({
   const variantClassNames = MAPPED_VARIANT_CLASSES[variant];
 
   return (
-    <button
+    <motion.button
       className={twMerge(
         'flex gap-4 items-center justify-center rounded-lg font-semibold',
         variantClassNames,
@@ -36,7 +37,7 @@ const Button: React.FC<React.PropsWithChildren<ButtonComponentProps>> = ({
       {isLoading && <SpinnerIcon />}
       {icon && !isLoading ? icon : null}
       {children && <span>{children}</span>}
-    </button>
+    </motion.button>
   );
 };
 

@@ -5,6 +5,7 @@ import MatchNewParticipantItem from '@/components/match/match-new-participant-it
 import MatchPersonItem from '@/components/match/match-person-item';
 import { MatchPerson } from '@/types/core';
 import { generateUid } from '@/utils';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useMemo, useState } from 'react';
 
 const NewMatchPage = () => {
@@ -30,7 +31,11 @@ const NewMatchPage = () => {
     [participants],
   );
 
-  const onSave = (uuid: string, values: Partial<MatchPerson>): void => {
+  const onSave = (
+    uuid: string,
+    values: Partial<MatchPerson>,
+    isEdit = false,
+  ): void => {
     setParticipants((prev) => {
       const clone = [...prev];
       const item = clone.find((participant) => participant.uid === uuid);
@@ -40,7 +45,7 @@ const NewMatchPage = () => {
         item.email = values.email;
       }
 
-      if (participantsMissingToPopulate?.length < 2) {
+      if (participantsMissingToPopulate?.length < 2 && !isEdit) {
         onAdd();
       }
 
@@ -71,48 +76,62 @@ const NewMatchPage = () => {
       <h1 className="text-center text-5xl font-bold py-8">New Match</h1>
       <section className="w-full md:max-w-md lg:max-w-xl border mx-auto">
         {!participants.length && (
-          <p className="text-center my-2 mt-4 font-semibold">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+            exit={{ opacity: 0 }}
+            className="text-center my-2 mt-4 font-semibold"
+          >
             Add new participants to your secret santa list!
-          </p>
+          </motion.p>
         )}
         <ul className="sm:px-2">
-          {participants?.map((participant) =>
-            participant.name && participant.email ? (
-              <MatchPersonItem
-                key={participant.uid}
-                participant={participant as MatchPerson}
-                onRemove={onRemove}
-                onSave={onSave}
-              />
-            ) : (
-              <MatchNewParticipantItem
-                uuid={participant.uid || ''}
-                onSave={onSave}
-                onRemove={onRemove}
-                key={participant.uid}
-              />
-            ),
-          )}
+          <AnimatePresence mode="sync">
+            {participants?.map((participant) =>
+              participant.name && participant.email ? (
+                <MatchPersonItem
+                  key={participant.uid}
+                  participant={participant as MatchPerson}
+                  onRemove={onRemove}
+                  onSave={onSave}
+                />
+              ) : (
+                <MatchNewParticipantItem
+                  uuid={participant.uid || ''}
+                  onSave={onSave}
+                  onRemove={onRemove}
+                  key={participant.uid}
+                />
+              ),
+            )}
+          </AnimatePresence>
         </ul>
 
         <div className="p-4 pt-8">
-          <Button
-            variant="secondary"
-            onClick={onAdd}
-            isLoading={isSendingEmail}
-          >
-            Add participant
-          </Button>
-          {readyToMatchParticipants?.length > 2 && (
+          <AnimatePresence mode="popLayout">
             <Button
+              variant="secondary"
+              onClick={onAdd}
               isLoading={isSendingEmail}
-              variant="primary"
-              className="mt-4"
-              onClick={onMatch}
             >
-              Match!
+              Add participant
             </Button>
-          )}
+            {readyToMatchParticipants?.length > 2 && (
+              <Button
+                initial={{ opacity: 0 }}
+                transition={{ ease: 'easeInOut', duration: 0.5 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                isLoading={isSendingEmail}
+                variant="primary"
+                className="mt-4"
+                onClick={onMatch}
+              >
+                Match!
+              </Button>
+            )}
+          </AnimatePresence>
         </div>
       </section>
     </main>
