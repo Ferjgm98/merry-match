@@ -46,7 +46,7 @@ const MatchNewParticipantItem: React.FC<MatchNewParticipantItemProps> = ({
         <div className="flex gap-1 justify-between flex-1">
           <Input
             placeholder="Participant name"
-            className="p-1 sm:p-2 rounded focus:outline-primary/25 focus:outline-1 focus:ring-0 border-b"
+            className="text-sm md:text-base p-1 sm:p-2 rounded focus:outline-primary/25 focus:outline-1 focus:ring-0 border-b"
             autoFocus
             wrapperClass="w-auto"
             error={errors.name?.message}
@@ -54,7 +54,7 @@ const MatchNewParticipantItem: React.FC<MatchNewParticipantItemProps> = ({
           />
           <Input
             placeholder="email@example.com"
-            className="p-1 sm:p-2 rounded focus:outline-primary/25 focus:outline-1 focus:ring-0 border-b"
+            className="text-sm md:text-base p-1 sm:p-2 rounded focus:outline-primary/25 focus:outline-1 focus:ring-0 border-b"
             type="email"
             wrapperClass="w-auto"
             error={errors.email?.message}

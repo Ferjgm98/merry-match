@@ -74,7 +74,7 @@ const NewMatchPage = () => {
   return (
     <main className="py-4">
       <h1 className="text-center text-5xl font-bold py-8">New Match</h1>
-      <section className="w-full md:max-w-md lg:max-w-xl border mx-auto">
+      <section className="w-full md:w-2/3 md:max-w-screen-xl border mx-auto">
         {!participants.length && (
           <motion.p
             initial={{ opacity: 0 }}
@@ -113,6 +113,7 @@ const NewMatchPage = () => {
             <Button
               variant="secondary"
               onClick={onAdd}
+              className="text-sm md:text-base"
               isLoading={isSendingEmail}
             >
               Add participant
@@ -125,7 +126,7 @@ const NewMatchPage = () => {
                 exit={{ opacity: 0 }}
                 isLoading={isSendingEmail}
                 variant="primary"
-                className="mt-4"
+                className="mt-4 text-sm md:text-base"
                 onClick={onMatch}
               >
                 Match!

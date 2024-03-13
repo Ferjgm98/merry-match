@@ -38,9 +38,9 @@ const MatchPersonItem: React.FC<MatchPersonItemProps> = ({
       exit={{ opacity: 0 }}
     >
       <div className="flex justify-between flex-1">
-        <p>{participant.name}</p>
+        <p className="text-sm md:text-base">{participant.name}</p>
         <p>
-          <span className="py-1 px-2 text-white bg-primary rounded-full">
+          <span className="text-sm md:text-base py-1 px-2 text-white bg-primary rounded-full">
             {participant.email}
           </span>
         </p>
